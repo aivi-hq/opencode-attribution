@@ -1,0 +1,35 @@
+{
+  "name": "opencode-attribution",
+  "version": "0.1.0",
+  "description": "OpenCode plugin: a commit tool that attributes commits by who launched the shell",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "git",
+    "commit",
+    "attribution"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aivi-hq/opencode-attribution.git"
+  },
+  "dependencies": {
+    "@opencode/plugin": "^2.0.11"
+  }
+}
