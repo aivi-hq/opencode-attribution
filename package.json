@@ -1,40 +1,42 @@
 {
-  "name": "opencode-attribution",
-  "version": "0.1.0",
-  "description": "OpenCode plugin: a commit tool that attributes commits by who launched the shell",
-  "type": "module",
-  "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts"
-  },
-  "files": [
-    "src",
-    "README.md",
-    "LICENSE"
-  ],
-  "engines": {
-    "node": ">=26"
-  },
-  "scripts": {
-    "test": "node --test",
-    "typecheck": "tsc --noEmit"
-  },
-  "keywords": [
-    "opencode",
-    "opencode-plugin",
-    "git",
-    "commit",
-    "attribution"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aivi-hq/opencode-attribution.git"
-  },
-  "dependencies": {
-    "@opencode/plugin": "^2.0.11"
-  },
-  "devDependencies": {
-    "@types/node": "^26.6.2",
-    "typescript": "^7.0.2"
-  }
+	"name": "opencode-attribution",
+	"version": "0.1.0",
+	"description": "OpenCode plugin: a commit tool that attributes commits by who launched the shell",
+	"type": "module",
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"files": [
+		"src",
+		"README.md",
+		"LICENSE"
+	],
+	"engines": {
+		"node": ">=26"
+	},
+	"scripts": {
+		"test": "node --test",
+		"typecheck": "tsc --noEmit",
+		"agentic:verify": "biome check --write . && npm run typecheck && npm test"
+	},
+	"keywords": [
+		"opencode",
+		"opencode-plugin",
+		"git",
+		"commit",
+		"attribution"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/aivi-hq/opencode-attribution.git"
+	},
+	"dependencies": {
+		"@opencode/plugin": "^2.0.11"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.14",
+		"@types/node": "^26.6.2",
+		"typescript": "^7.0.2"
+	}
 }
