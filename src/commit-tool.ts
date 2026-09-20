@@ -42,14 +42,7 @@ export function createCommitTool(deps: CommitToolDeps): ToolInfo<typeof input> {
   return {
     name: "commit",
     description:
-      "Create a git commit with attribution applied automatically. Use this for every " +
-      "commit — `git commit` in the shell is denied by configuration. Attribution follows " +
-      "who launched the shell: in an unattended agent worktree (git config " +
-      "agent.autonomous=true) the commit is left untouched because the agent identity is " +
-      "already the worktree's author and committer; otherwise the person stays the author " +
-      "and a `Co-authored-by` trailer (git config opencode.coauthor, default " +
-      "OpenCode <noreply@opencode.ai>) plus a `Harness` trailer (OpenCode version and " +
-      "session model) are added.",
+      "Create a git commit with the correct attribution automatically. Use this for all commits; direct `git commit` commands are disabled.",
     input,
     execute: async (parameters, context) => {
       const { message, args } = parameters as { message: string; args?: string[] }

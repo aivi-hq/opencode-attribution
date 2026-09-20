@@ -16,7 +16,8 @@
     "node": ">=26"
   },
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "opencode",
@@ -31,5 +32,9 @@
   },
   "dependencies": {
     "@opencode/plugin": "^2.0.11"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
   }
 }
