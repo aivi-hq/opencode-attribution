@@ -1,8 +1,10 @@
-// Plugin entry. All behaviour lives in commit-tool.ts and attribution.ts;
-// this file only wires the OpenCode context (version, session lookup) into it.
+// Plugin entry. All behaviour lives in attribution.ts, commit-tool.ts and
+// redirect.ts; this file only wires the OpenCode context (version, session
+// lookup) into them.
 
 import { Plugin } from "@opencode/plugin";
 import { createCommitTool } from "./commit-tool.ts";
+import { redirectGitCommit } from "./redirect.ts";
 
 export default Plugin.define({
 	id: "opencode-attribution",
@@ -18,5 +20,10 @@ export default Plugin.define({
 		await ctx.tool.transform((editor) => {
 			editor.add(tool);
 		});
+
+		// The plugin's own permission deny — no configuration needed. It
+		// follows the plugin everywhere; a person's terminal is never
+		// permission-evaluated, so it is never denied.
+		await ctx.permission.hook("evaluate", redirectGitCommit);
 	},
 });
