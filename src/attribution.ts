@@ -27,6 +27,8 @@ export interface Decision {
 	version: string;
 	/** The session's model, when the session has one. */
 	model?: Model | undefined;
+	/** Plugin option `harness`: include the `Harness:` debug line. */
+	harness: boolean;
 }
 
 export interface Trailer {
@@ -45,8 +47,14 @@ export function harness(version: string, model?: Model | undefined): string {
 /** The trailers a commit gets, in order; empty for autonomous (bot-authored) commits. */
 export function trailers(decision: Decision): Trailer[] {
 	if (decision.autonomous) return [];
-	return [
+	const result: Trailer[] = [
 		{ token: "Co-authored-by", value: decision.coauthor },
-		{ token: "Harness", value: harness(decision.version, decision.model) },
 	];
+	if (decision.harness) {
+		result.push({
+			token: "Harness",
+			value: harness(decision.version, decision.model),
+		});
+	}
+	return result;
 }

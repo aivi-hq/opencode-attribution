@@ -14,6 +14,17 @@ import { createCommitTool, type Session } from "../src/commit-tool.ts";
 
 const dirs: string[] = [];
 
+// Isolate every git call in this file — the tool's included — from the
+// machine's global and system config: whatever opencode.coauthor or
+// agent.autonomous the developer has set must not leak into expectations.
+const emptyConfig = join(
+	await mkdtemp(join(tmpdir(), "attribution-env-")),
+	"gitconfig",
+);
+await writeFile(emptyConfig, "");
+process.env.GIT_CONFIG_GLOBAL = emptyConfig;
+process.env.GIT_CONFIG_SYSTEM = emptyConfig;
+
 after(async () => {
 	await Promise.all(
 		dirs.map((dir) => rm(dir, { recursive: true, force: true })),
@@ -43,9 +54,11 @@ async function committed(
 	message: string,
 	session: Partial<Session> & { directory: string },
 	args?: string[],
+	harness = true,
 ): Promise<string> {
 	const tool = createCommitTool({
 		version: "2.0.11",
+		harness,
 		session: async () => ({
 			directory: session.directory,
 			model: session.model,
@@ -143,6 +156,16 @@ test("a session without a model still gets a harness line", async () => {
 		git(dir, "log", "-1", "--pretty=%B"),
 		/^Harness: OpenCode v2\.0\.11$/m,
 	);
+});
+
+test("the harness option off keeps only the co-author", async () => {
+	const dir = await stagedRepo();
+	await committed("Add a file", { directory: dir, model }, undefined, false);
+	assert.deepEqual(git(dir, "log", "-1", "--pretty=%B").split("\n"), [
+		"Add a file",
+		"",
+		"Co-authored-by: OpenCode <noreply@opencode.ai>",
+	]);
 });
 
 test("extra git arguments pass through", async () => {

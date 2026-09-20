@@ -11,6 +11,7 @@ export default Plugin.define({
 	async setup(ctx) {
 		const tool = createCommitTool({
 			version: ctx.app.version,
+			harness: ctx.options.harness !== false,
 			session: async (sessionID) => {
 				const info = await ctx.session.get({ sessionID });
 				return { directory: info.location.directory, model: info.model };

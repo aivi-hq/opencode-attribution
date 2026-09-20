@@ -21,6 +21,20 @@ default is `OpenCode <noreply@opencode.ai>`):
 git config --global opencode.coauthor "aivi-agent[bot] <331678708+aivi-agent[bot]@users.noreply.github.com>"
 ```
 
+Optional — hide the `Harness:` debug line (attribution is not affected):
+
+```jsonc
+// opencode.json(c)
+{
+  "plugins": [
+    {
+      "package": "opencode-attribution",
+      "options": { "harness": false }
+    }
+  ]
+}
+```
+
 That is all. No permission configuration: the plugin denies `git commit` in
 the shell tool itself.
 
@@ -48,7 +62,8 @@ Attribution follows **who launched the shell**, never what a prompt said:
 
   `Harness:` is one line of debug metadata: the OpenCode version and the
   session's `providerID/modelID`. GitHub renders it as plain text; only
-  `Co-authored-by` links to a profile.
+  `Co-authored-by` links to a profile. It can be turned off with the
+  `harness` plugin option — the co-author trailer is always added.
 - Denies `git commit` through the shell tool, with the commit tool named as
   the reason — agents are redirected, never stuck. OpenCode's permission
   scanner splits chained commands, so `git add x && git commit` is denied

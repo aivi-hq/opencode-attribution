@@ -19,6 +19,8 @@ export interface CommitToolDeps {
 	version: string;
 	/** Resolve the session behind a tool call: directory and model, from `ctx.session.get`. */
 	session: (sessionID: string) => Promise<Session>;
+	/** Plugin option `harness`: include the `Harness:` debug line. Default is true. */
+	harness?: boolean;
 }
 
 const input = {
@@ -63,6 +65,7 @@ export function createCommitTool(deps: CommitToolDeps): ToolInfo<typeof input> {
 				coauthor,
 				version: deps.version,
 				model: session.model,
+				harness: deps.harness !== false,
 			})) {
 				trailerArgs.push("--trailer", `${trailer.token}: ${trailer.value}`);
 			}

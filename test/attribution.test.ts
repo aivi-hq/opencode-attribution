@@ -26,6 +26,7 @@ test("an autonomous (worker-launched) commit gets no trailers", () => {
 			coauthor: DEFAULT_COAUTHOR,
 			version: "2.0.11",
 			model: { id: "Qwen3.8-Flash-Next", providerID: "mlx-serve" },
+			harness: true,
 		}),
 		[],
 	);
@@ -38,6 +39,7 @@ test("an attended commit gets the co-author and the harness line, in order", () 
 			coauthor: DEFAULT_COAUTHOR,
 			version: "2.0.11",
 			model: { id: "Qwen3.8-Flash-Next", providerID: "mlx-serve" },
+			harness: true,
 		}),
 		[
 			{ token: "Co-authored-by", value: "OpenCode <noreply@opencode.ai>" },
@@ -56,8 +58,22 @@ test("a configured co-author is used verbatim", () => {
 		autonomous: false,
 		coauthor: bot,
 		version: "2.0.11",
+		harness: true,
 	});
 	assert.deepEqual(first, { token: "Co-authored-by", value: bot });
+});
+
+test("the harness option off keeps only the co-author", () => {
+	assert.deepEqual(
+		trailers({
+			autonomous: false,
+			coauthor: DEFAULT_COAUTHOR,
+			version: "2.0.11",
+			model: { id: "m", providerID: "p" },
+			harness: false,
+		}),
+		[{ token: "Co-authored-by", value: "OpenCode <noreply@opencode.ai>" }],
+	);
 });
 
 test("the harness line normalizes the version and survives a missing model", () => {
